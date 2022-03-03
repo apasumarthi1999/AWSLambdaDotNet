@@ -29,11 +29,15 @@ namespace LambdaProcessorClient
          Stopwatch watch = Stopwatch.StartNew();
 
          // Parallelize the prime number verification, as each number can be verified independently
-         Parallel.For( 2, 1000, ( number ) =>
+         Parallel.For( 2, 1001, ( number ) =>
          {
-            // Since we want to wai until all the numbers are verified, we cannot use async C# lambda here.
-            // We have to wait on the completion of the prime number execution method.
+            // We want to wait until all the numbers are verified in the parallel loop.
+            // However, we cannot use async C# lambda inside a parallel loop
+            // (we can use async/await, but the loop returns before completion of the lambda functions, which we do not want).
+            // Hence, we have to wait on the completion of the prime number execution method using its Task awaiter.
+
             IsPrimeAsync( number, lambdaClient ).GetAwaiter().GetResult();
+
          } );
 
          Console.WriteLine( $"Elapsed time {watch.ElapsedMilliseconds} ms. Prime Number Count {s_primeNumbers.Count}" );
