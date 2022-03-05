@@ -21,7 +21,15 @@ namespace AWSLambdaProcessorDotNet
       /// <returns>True (if prime)/False (if not prime)</returns>
       public bool FunctionHandler( int number, ILambdaContext context )
       {
-         for ( int i = 2; i < number; i++ )
+         if ( number == 2 )
+            return true;
+
+         if ( number % 2 == 0 )
+            return false;
+
+         var sqrtNumber = Math.Ceiling( Math.Sqrt( number ) );
+
+         for ( int i = 3; i <= sqrtNumber; i++ )
             if ( number % i == 0 )
                return false;
 

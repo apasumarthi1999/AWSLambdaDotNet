@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Amazon;
@@ -42,7 +44,7 @@ namespace LambdaProcessorClient
 
          Console.WriteLine( $"Elapsed time {watch.ElapsedMilliseconds} ms. Prime Number Count {s_primeNumbers.Count}" );
 
-         foreach ( var number in s_primeNumbers )
+         foreach ( var number in s_primeNumbers.OrderBy( val => val ) )
             Console.WriteLine( number );
       }
 
